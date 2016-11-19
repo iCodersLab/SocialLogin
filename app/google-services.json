@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "549654768888",
+    "project_id": "verdant-ethos-150008"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549654768888:android:79ba4496e35fd435",
+        "android_client_info": {
+          "package_name": "icoderslab.com.sociallogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549654768888-pa1sqdn2h2s0a259i6u8i3l43givfcp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "icoderslab.com.sociallogin",
+            "certificate_hash": "659F2C791BF2A2C5DA5516D3D9288BA1DC3B6329"
+          }
+        },
+        {
+          "client_id": "549654768888-o5fn4tui3hli37vuvj0a0cnkvv2na3pi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkSIS6m1pr74DqhwIylFYDmN41MDf_vSo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
