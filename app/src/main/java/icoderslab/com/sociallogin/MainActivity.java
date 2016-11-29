@@ -2,13 +2,18 @@
 package icoderslab.com.sociallogin;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -27,7 +32,9 @@ import com.google.android.gms.common.api.Status;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -35,30 +42,35 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import io.fabric.sdk.android.Fabric;
 import java.util.concurrent.Callable;
 
+import static com.twitter.sdk.android.Twitter.getSessionManager;
+
 public class MainActivity extends AppCompatActivity {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "izRZ3BRpL1jrpSniSJYAI91AV";
     private static final String TWITTER_SECRET = "PtboEJCcxuGSA3cxuukTkMlauCminR8zADX3LHymJxDrv6tuzL";
 
+    private TwitterLoginButton loginButton;
+
 
     private SignInButton mGoogleSignInButton;
     private GoogleApiClient mGoogleApiClient;
     private LoginButton mFacebookSignInButton;
     private CallbackManager mFacebookCallbackManager;
-    private TwitterLoginButton loginButton;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         mFacebookCallbackManager = CallbackManager.Factory.create();
-        mFacebookSignInButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+        mFacebookSignInButton = (LoginButton) findViewById(R.id.login_button);
         mFacebookSignInButton.registerCallback(mFacebookCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -88,38 +100,44 @@ public class MainActivity extends AppCompatActivity {
         );
 
         loginButton = (TwitterLoginButton) findViewById(R.id.twitter_sign_in_button);
-
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                String UserName = result.data.getUserName();
-                Toast.makeText(MainActivity.this, UserName, Toast.LENGTH_LONG).show();
-            }
+                // The TwitterSession is also available through:
+                 Twitter.getInstance().core.getSessionManager().getActiveSession();
+                Twitter.logOut();
 
+                TwitterSession session = result.data;
+                // TODO: Remove toast and use the TwitterSession's userID
+                // with your app's user model
+                String msg = "@" + session.getUserName() + " logged in! (#" + session.getUserId() + ")";
+                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+
+
+            }
             @Override
             public void failure(TwitterException exception) {
-
+                Log.d("TwitterKit", "Login with Twitter failure", exception);
             }
         });
 
 
+
+
+
         mGoogleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
-        findViewById(R.id.signOut);
         mGoogleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signInWithGoogle();
-                switch (v.getId()) {
-                    // ...
-                    case R.id.signOut:
-                        signOut();
-                        break;
 
-                }
             }
 
         });
 
+    }
+
+    private void checkInitialized() {
     }
 
     private void handleSignInResult(Object o) {

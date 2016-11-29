@@ -3,44 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-
-
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_sign_in_button"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        />
-    <Button
-        android:id="@+id/signOut"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:text="sign out" />
-
-
-
-    <com.twitter.sdk.android.core.identity.TwitterLoginButton
-        android:id="@+id/twitter_sign_in_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp" />
-
+    android:orientation="vertical"
+   >
 
 
     <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_sign_in_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/login_button"
+        android:layout_width="223dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="40dp"
 
+        android:layout_marginLeft="50dp"
 
+        />
 
+    <com.twitter.sdk.android.core.identity.TwitterLoginButton
+        android:id="@+id/twitter_sign_in_button"
+        android:layout_width="230dp"
+        android:layout_height="35dp"
+       android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="40dp"
+
+        />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/google_sign_in_button"
+        android:layout_width="233dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="40dp"
+        />
 
 
 </LinearLayout>
